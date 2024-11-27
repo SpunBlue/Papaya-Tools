@@ -25,6 +25,75 @@ class Main {
                         print('$target is not a valid option');
                     case 'psych' | 'psych engine':
                         print('Converting to Psych Engine (v1.0) from Papaya Engine');
+
+                        var bytes:Bytes = obtained;
+                        var content:String = bytes.toString();
+
+
+                        print('Parsing...');
+                        var papaya:papaya.Song.SwagSong = Json.parse(content).song;
+
+                        print('Parsing Completed');
+
+                        var psych:psych.Song.SwagSong =
+                        {
+                            song: papaya.song,
+                            bpm: papaya.bpm,
+                            speed: papaya.speed,
+                            notes: [],
+                            events: [],
+                            needsVoices: papaya.needsVoices,
+                            player1: "bf",
+                            player2: "dad",
+                            gfVersion: "gf",
+                            stage: "stage",
+                            format: "psych_v1_convert",
+                            offset: 0
+                        };
+
+                        print("Converting Sections");
+
+                        var sections:Array<psych.Song.SwagSection> = [];
+                        for (i in 0...papaya.notes.length) {
+                            print('Converting Section $i');
+
+                            var curSection = papaya.notes[i];
+                            var psychSection:psych.Song.SwagSection = {
+                                sectionNotes: [],
+                                sectionBeats: curSection.lengthInSteps / 4,
+                                mustHitSection: curSection.mustHitSection,
+                                bpm: curSection.bpm,
+                                changeBPM: curSection.changeBPM
+                            };
+
+                            for (note in curSection.sectionNotes) {
+                                var psychNote:Array<Dynamic> = [];
+
+                                psychNote[0] = note.strumTime;
+
+                                var noteData = note.noteData;
+                                if (!curSection.mustHitSection) {
+                                    if (noteData > 3)
+                                        noteData = noteData - 4;
+                                    else
+                                        noteData = noteData + 4;
+                                }
+
+                                psychNote[1] = noteData;
+                                psychNote[2] = note.sustainLength;
+                                psychNote[3] = "";
+
+                                psychSection.sectionNotes.push(psychNote);
+                            }
+                            
+                            sections[i] = psychSection;
+                            print('Finished Converting Section');
+                        }
+
+                        psych.notes = sections;
+
+                        holding = Bytes.ofString(Json.stringify(psych));
+                        print("Finished!");
                 }
             }
         },
@@ -117,13 +186,15 @@ class Main {
                             }
                         }
 
-                        print("Finishing Up...");
+                        // print("Finishing Up...");
 
                         var json = {
                             "song": papaya
                         }
 
                         holding = Bytes.ofString(Json.stringify(json));
+
+                        print("Finished!");
                 }
             }
         },
