@@ -81,7 +81,6 @@ class Main {
 
                                 psychNote[1] = noteData;
                                 psychNote[2] = note.sustainLength;
-                                psychNote[3] = "";
 
                                 psychSection.sectionNotes.push(psychNote);
                             }
