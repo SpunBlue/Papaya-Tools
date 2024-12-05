@@ -3,7 +3,9 @@ package papaya;
 typedef SwagSong =
 {
 	var song:String;
-
+	/**
+	 * SECTIONS, NOT NOTES TOO LAZY TO FIX.
+	 */
 	var notes:Array<SwagSection>;
 	var bpm:Float;
 	var needsVoices:Bool;
@@ -14,6 +16,7 @@ typedef SwagSong =
 	var girlfriend:String;
 
 	var visualStyle:String;
+	var ?curStage:String;
 }
 
 typedef SwagSection =

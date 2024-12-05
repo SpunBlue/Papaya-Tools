@@ -91,7 +91,7 @@ class Main {
 
                         psych.notes = sections;
 
-                        holding = Bytes.ofString(Json.stringify(psych));
+                        holding = Bytes.ofString(Json.stringify(psych, "\t"));
                         print("Finished!");
                 }
             }
@@ -118,6 +118,7 @@ class Main {
                         print('Parsing Completed');
                         var papaya:papaya.Song.SwagSong = {
                             visualStyle: 'default',
+                            curStage: 'stage',
                             song: "none",
                             bpm: 150,
                             speed: 1,
@@ -191,7 +192,7 @@ class Main {
                             "song": papaya
                         }
 
-                        holding = Bytes.ofString(Json.stringify(json));
+                        holding = Bytes.ofString(Json.stringify(json, "\t"));
 
                         print("Finished!");
                 }
